@@ -29,7 +29,7 @@ The nine-city mean went from 34.8 µg/m³ in 2015 to 20.1 in 2024: a Theil–Sen
 
 ![Change over the decade, every city and pollutant](outputs/pollutant_trend_heatmap.png)
 
-<!-- outputs/pm25_trend_all_cities.png is not used: its city labels overlap at 2024. Fix the labels, then it can sit beside this heatmap. -->
+![PM2.5 annual mean by city, 2015–2024](outputs/pm25_trend_all_cities.png)
 
 ### Ozone did not
 

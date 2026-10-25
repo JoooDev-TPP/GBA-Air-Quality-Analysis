@@ -58,13 +58,40 @@ def diverging_trends(years: pd.DataFrame) -> Path:
     return _save(fig, "pm25_vs_ozone_index.png")
 
 
+def _spread(values: dict[str, float], gap: float) -> dict[str, float]:
+    """Label y-positions: keep order, enforce a minimum gap, stay centred on the originals."""
+    order = sorted(values, key=values.get)
+    pos = [values[k] for k in order]
+    for _ in range(200):
+        moved = False
+        for i in range(1, len(pos)):
+            short = gap - (pos[i] - pos[i - 1])
+            if short > 1e-9:
+                pos[i - 1] -= short / 2
+                pos[i] += short / 2
+                moved = True
+        if not moved:
+            break
+    return dict(zip(order, pos))
+
+
 def pm25_by_city(years: pd.DataFrame) -> Path:
     fig, ax = plt.subplots(figsize=(7.2, 4.0))
+    ends = {}
     for city, group in years.groupby("city"):
         ax.plot(group["year"], group["PM2.5"], color=CITY, linewidth=1.0, alpha=0.9)
         last = group.dropna(subset=["PM2.5"]).iloc[-1]
-        ax.annotate(city, (last["year"], last["PM2.5"]), textcoords="offset points",
-                    xytext=(4, -2), fontsize=7, color="#475569")
+        ends[city] = (last["year"], last["PM2.5"])
+    # Direct labels at the line ends: spread them to a minimum vertical gap and
+    # join each moved label to its line end with a thin leader.
+    low, high = ax.get_ylim()
+    positions = _spread({c: y for c, (_, y) in ends.items()}, 0.043 * (high - low))
+    for city, (x, y) in ends.items():
+        ty = positions[city]
+        if abs(ty - y) > 1e-9:
+            ax.plot([x, x + 0.3], [y, ty], color=CITY, linewidth=0.6, alpha=0.9)
+        ax.annotate(city, (x + 0.3, ty), textcoords="offset points", xytext=(3, 0),
+                    fontsize=7, color="#475569", va="center")
     region = analysis.regional(years)
     ax.plot(region["year"], region["PM2.5"], color=REGION, linewidth=2.6, label="nine-city mean")
     ax.axhline(metrics.GRADE_II["PM2.5"], color="#0f172a", linewidth=0.9, linestyle="--")
