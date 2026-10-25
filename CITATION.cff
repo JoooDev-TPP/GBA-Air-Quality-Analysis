@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use these tables or findings, please cite this repository and the China National Environmental Monitoring Centre record it is derived from."
+title: "Greater Bay Area air quality, 2015–2024 (GBA-Air-Quality-Analysis)"
+type: software
+authors:
+  - alias: JooooDev
+    website: "https://github.com/JoooDev-TPP"
+repository-code: "https://github.com/JoooDev-TPP/GBA-Air-Quality-Analysis"
+license: MIT
+version: 1.0.0
+# date-released: YYYY-MM-DD   # TODO: set when v1.0.0 is tagged
+# doi: 10.5281/zenodo.XXXXXXX # TODO
+keywords:
+  - air quality
+  - PM2.5
+  - ozone
+  - Greater Bay Area
+  - CNEMC
+references:
+  - type: data
+    title: "National real-time air quality publishing platform, hourly city data"
+    authors:
+      - name: "China National Environmental Monitoring Centre (中国环境监测总站)"
+  - type: data
+    title: "Archive of CNEMC hourly air quality data"
+    authors:
+      - name: "Wang Xiaolei"
+    url: "https://quotsoft.net/air/"
